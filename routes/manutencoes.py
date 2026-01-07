@@ -19,6 +19,7 @@ def listar():
     return render_template("manutencoes/list.html", manutencoes=manutencoes)
 
 # NOVA MANUTENÇÃO
+# NOVA MANUTENÇÃO (POR QUARTO)
 @manutencoes_bp.route("/nova/<int:quarto_id>", methods=["GET", "POST"])
 def nova_por_quarto(quarto_id):
     quarto = Quarto.query.get_or_404(quarto_id)
@@ -75,33 +76,4 @@ def excluir(id):
 
     return redirect(
         url_for("quartos.manutencoes_do_quarto", quarto_id=quarto_id)
-    )
-@manutencoes_bp.route("/nova/<int:quarto_id>", methods=["GET", "POST"])
-def nova_por_quarto(quarto_id):
-    quarto = Quarto.query.get_or_404(quarto_id)
-    itens = ItemManutencao.query.all()
-
-    if request.method == "POST":
-        item_id = request.form["item_id"]
-        item = ItemManutencao.query.get(item_id)
-
-        manutencao = Manutencao(
-            quarto_id=quarto.id,
-            item_id=item.id,
-            proxima_manutencao=date.today()
-        )
-
-        manutencao.registrar_execucao(item.periodicidade_dias)
-
-        db.session.add(manutencao)
-        db.session.commit()
-
-        return redirect(
-            url_for("quartos.manutencoes_do_quarto", quarto_id=quarto.id)
-        )
-
-    return render_template(
-        "manutencoes/form_por_quarto.html",
-        quarto=quarto,
-        itens=itens
     )

@@ -7,11 +7,19 @@
     <small class="text-muted">{{ quarto.andar.nome }}</small>
 </h4>
 
-<a href="{{ url_for('andares.quartos_do_andar', andar_id=quarto.andar.id) }}"
-   class="btn btn-secondary mb-3">
-    Voltar para Quartos
-</a>
+<div class="mb-3">
+    <a href="{{ url_for('andares.quartos_do_andar', andar_id=quarto.andar.id) }}"
+       class="btn btn-secondary">
+        Voltar para Quartos
+    </a>
 
+    <a href="{{ url_for('manutencoes.nova_por_quarto', quarto_id=quarto.id) }}"
+       class="btn btn-primary">
+        ➕ Nova Manutenção
+    </a>
+</div>
+
+{% if manutencoes %}
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -33,22 +41,23 @@
             <td>{{ m.status }}</td>
             <td>
                 <a href="{{ url_for('manutencoes.executar', id=m.id) }}"
-                    class="btn btn-sm btn-success">
+                   class="btn btn-sm btn-success">
                     Executar
                 </a>
+                <a href="{{ url_for('manutencoes.excluir', id=m.id) }}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Excluir manutenção?')">
+                    Excluir
+                </a>
             </td>
-            <a href="{{ url_for('manutencoes.nova_por_quarto', quarto_id=quarto.id) }}"
-                class="btn btn-primary mb-3">
-                    ➕ Nova Manutenção
-            </a>
-            <a href="{{ url_for('manutencoes.excluir', id=m.id) }}"
-                class="btn btn-sm btn-danger"
-                onclick="return confirm('Excluir manutenção?')">
-                Excluir
-            </a>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+{% else %}
+    <div class="alert alert-info">
+        Nenhuma manutenção cadastrada para este quarto.
+    </div>
+{% endif %}
 
 {% endblock %}
