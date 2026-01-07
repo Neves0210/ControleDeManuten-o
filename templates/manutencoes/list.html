@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Manutenções</h4>
+
+<a href="{{ url_for('manutencoes.nova') }}" class="btn btn-primary mb-2">
+    Nova Manutenção
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Quarto</th>
+            <th>Item</th>
+            <th>Próxima</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for m in manutencoes %}
+        <tr class="
+            {% if m.status == 'Atrasado' %}table-danger{% endif %}
+            {% if m.status == 'Pendente' %}table-warning{% endif %}
+            {% if m.status == 'OK' %}table-success{% endif %}
+        ">
+            <td>{{ m.quarto.numero }}</td>
+            <td>{{ m.item.nome }}</td>
+            <td>{{ m.proxima_manutencao.strftime('%d/%m/%Y') }}</td>
+            <td>{{ m.status }}</td>
+            <td>
+                <a href="{{ url_for('manutencoes.executar', id=m.id) }}"
+                   class="btn btn-sm btn-success">
+                    Executar
+                </a>
+                <a href="{{ url_for('manutencoes.excluir', id=m.id) }}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Excluir esta manutenção?')">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

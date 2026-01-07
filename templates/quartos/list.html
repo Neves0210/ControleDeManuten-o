@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Quartos do {{ andar.nome }}</h4>
+
+<a href="{{ url_for('quartos.novo_no_andar', andar_id=andar.id) }}"
+   class="btn btn-primary mb-3">
+    Novo Quarto
+</a>
+
+<a href="{{ url_for('andares.listar') }}"
+   class="btn btn-secondary mb-3">
+    Voltar para Andares
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for quarto in quartos %}
+        <tr>
+            <td>{{ quarto.numero }}</td>
+            <td>{{ quarto.status }}</td>
+            <td>
+                <a href="{{ url_for('quartos.editar', id=quarto.id) }}"
+                   class="btn btn-sm btn-warning">
+                    Editar
+                </a>
+                <a href="{{ url_for('quartos.manutencoes_do_quarto', quarto_id=quarto.id) }}"
+                    class="btn btn-sm btn-info">
+                        Manutenções
+                </a>
+                <a href="{{ url_for('quartos.excluir', id=quarto.id) }}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Excluir quarto?')">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

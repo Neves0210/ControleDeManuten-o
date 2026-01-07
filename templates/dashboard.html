@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Dashboard</h3>
+
+<!-- CONTADORES -->
+<div class="row mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card text-bg-success mb-2">
+            <div class="card-body">
+                <h6>OK</h6>
+                <h3>{{ total_ok }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <div class="card text-bg-warning mb-2">
+            <div class="card-body">
+                <h6>Pendentes</h6>
+                <h3>{{ total_pendente }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <div class="card text-bg-danger mb-2">
+            <div class="card-body">
+                <h6>Atrasadas</h6>
+                <h3>{{ total_atrasado }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+        <div class="card text-bg-dark mb-2">
+            <div class="card-body">
+                <h6>Quartos</h6>
+                <h3>{{ quartos_total }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mb-4 flex-wrap">
+    <a href="{{ url_for('manutencoes.nova') }}"
+       class="btn btn-outline-primary">
+        ➕ Nova Manutenção
+    </a>
+</div>
+
+<!-- ANDARES -->
+<h5>Andares</h5>
+
+<div class="mb-2">
+    <a href="{{ url_for('andares.listar') }}"
+       class="btn btn-secondary btn-sm">
+        ⚙️ Gerenciar Andares
+    </a>
+    <a href="{{ url_for('itens.listar') }}"
+        class="btn btn-outline-secondary">
+        🛠 Itens de Manutenção
+    </a>
+
+</div>
+
+
+<ul class="list-group">
+{% for andar in dados_andares %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            <strong>{{ andar.nome }}</strong><br>
+            <small>{{ andar.quartos }} quartos</small>
+        </div>
+
+        <div>
+            {% if andar.atrasadas > 0 %}
+                <span class="badge bg-danger">
+                    {{ andar.atrasadas }} atrasadas
+                </span>
+            {% else %}
+                <span class="badge bg-success">
+                    Tudo em dia
+                </span>
+            {% endif %}
+
+            <a href="{{ url_for('andares.quartos_do_andar', andar_id=andar.id) }}"
+               class="btn btn-sm btn-primary ms-2">
+                Ver Quartos
+            </a>
+        </div>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

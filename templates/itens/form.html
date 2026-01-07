@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>{{ "Editar Item" if item else "Novo Item" }}</h4>
+
+<form method="post">
+    <div class="mb-2">
+        <label>Nome do item</label>
+        <input
+            class="form-control"
+            name="nome"
+            value="{{ item.nome if item else '' }}"
+            required
+        >
+    </div>
+
+    <div class="mb-2">
+        <label>Periodicidade (dias)</label>
+        <input
+            type="number"
+            class="form-control"
+            name="periodicidade"
+            min="1"
+            value="{{ item.periodicidade_dias if item else '' }}"
+            required
+        >
+    </div>
+
+    <button class="btn btn-success">
+        {{ "Atualizar" if item else "Salvar" }}
+    </button>
+
+    <a href="{{ url_for('itens.listar') }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+{% endblock %}

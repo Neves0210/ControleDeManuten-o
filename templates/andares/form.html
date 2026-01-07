@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>{{ "Editar Andar" if andar else "Novo Andar" }}</h4>
+
+<form method="post">
+    <input
+        class="form-control mb-2"
+        name="nome"
+        placeholder="Nome do andar"
+        value="{{ andar.nome if andar else '' }}"
+        required
+    >
+
+    <button class="btn btn-success">
+        {{ "Atualizar" if andar else "Salvar" }}
+    </button>
+
+    <a href="{{ url_for('andares.listar') }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+{% endblock %}

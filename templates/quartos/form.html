@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>
+    {{ "Editar Quarto" if quarto else "Novo Quarto" }}
+    {% if andar %} - {{ andar.nome }}{% endif %}
+</h4>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Número do quarto</label>
+        <input
+            class="form-control"
+            name="numero"
+            value="{{ quarto.numero if quarto else '' }}"
+            required
+        >
+    </div>
+
+    <button class="btn btn-success">
+        {{ "Atualizar" if quarto else "Salvar" }}
+    </button>
+
+    {% if andar %}
+    <a href="{{ url_for('andares.quartos_do_andar', andar_id=andar.id) }}"
+    class="btn btn-secondary">
+        Cancelar
+    </a>
+    {% endif %}
+
+</form>
+
+{% endblock %}

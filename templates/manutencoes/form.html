@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Nova Manutenção</h4>
+
+<form method="post">
+    <div class="mb-2">
+        <label>Quarto</label>
+        <select class="form-control" name="quarto_id" required>
+            {% for quarto in quartos %}
+                <option value="{{ quarto.id }}">
+                    {{ quarto.numero }} - {{ quarto.andar.nome }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-2">
+        <label>Item</label>
+        <select class="form-control" name="item_id" required>
+            {% for item in itens %}
+                <option value="{{ item.id }}">
+                    {{ item.nome }} ({{ item.periodicidade_dias }} dias)
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button class="btn btn-success">Criar</button>
+    <a href="{{ url_for('manutencoes.listar') }}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+{% endblock %}
