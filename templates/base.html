@@ -11,25 +11,85 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+    <div class="container-fluid d-flex align-items-center">
 
-        <!-- Lado esquerdo: voltar -->
+        <!-- Esquerda: voltar -->
         <button
-            class="btn btn-outline-light btn-sm"
+            class="btn btn-outline-light btn-sm me-2"
             onclick="window.history.back()">
             ⬅ Voltar
         </button>
+
+        <!-- Menus por cargo -->
+        {% if usuario_logado %}
+        <ul class="navbar-nav flex-row me-auto">
+
+            <!-- ADMIN -->
+            {% if usuario_logado.cargo.nome == "Admin" %}
+            <li class="nav-item me-3">
+                <a class="nav-link text-white"
+                   href="{{ url_for('usuarios.listar') }}">
+                    👥 Usuários
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- ADMIN + SUPERVISOR -->
+            {% if usuario_logado.cargo.nome in ["Admin", "Supervisor"] %}
+            <li class="nav-item me-3">
+                <a class="nav-link text-white"
+                   href="{{ url_for('andares.listar') }}">
+                    🏢 Andares
+                </a>
+            </li>
+
+            <li class="nav-item me-3">
+                <a class="nav-link text-white"
+                   href="{{ url_for('itens.listar') }}">
+                    🧰 Itens
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- ADMIN + SUPERVISOR + MANUTENCAO -->
+            {% if usuario_logado.cargo.nome in ["Admin", "Supervisor", "Manutencao"] %}
+            <li class="nav-item me-3">
+                <a class="nav-link text-white"
+                   href="{{ url_for('manutencoes.listar') }}">
+                    🔧 Manutenções
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+        {% endif %}
 
         <!-- Centro: título -->
         <span class="navbar-brand mb-0 h1 mx-auto">
             Manutenção
         </span>
 
-        <!-- Lado direito: dashboard -->
-        <a href="{{ url_for('dashboard') }}"
-           class="btn btn-outline-light btn-sm">
-            🏠 Dashboard
-        </a>
+        <!-- Direita: usuário + dashboard + sair -->
+        {% if usuario_logado %}
+        <div class="d-flex align-items-center">
+
+            <span class="text-white me-3 small">
+                {{ usuario_logado.username }}
+                ({{ usuario_logado.cargo.nome }})
+            </span>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="btn btn-outline-light btn-sm me-2">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('auth.logout') }}"
+               class="btn btn-outline-light btn-sm">
+                Sair
+            </a>
+
+        </div>
+        {% endif %}
 
     </div>
 </nav>

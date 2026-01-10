@@ -1,6 +1,10 @@
 from flask import Flask, render_template, redirect, url_for
 from config import *
 from models import db
+from utils.auth import login_required
+from routes.auth import auth_bp
+from routes.usuarios import usuarios_bp
+from utils.auth import usuario_logado
 
 from models.andar import Andar
 from models.quarto import Quarto
@@ -26,6 +30,7 @@ def index():
     return redirect(url_for("dashboard"))
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     andares = Andar.query.all()
     quartos_total = Quarto.query.count()
@@ -75,11 +80,19 @@ def dashboard():
         dados_andares=dados_andares
     )
 
+@app.context_processor
+def inject_user():
+    return dict(usuario_logado=usuario_logado())
+
 # REGISTRO DOS BLUEPRINTS
 app.register_blueprint(andares_bp)
 app.register_blueprint(quartos_bp)
 app.register_blueprint(itens_bp)
 app.register_blueprint(manutencoes_bp)
+app.register_blueprint(usuarios_bp)
+
+app.secret_key = "chave-super-secreta"
+app.register_blueprint(auth_bp)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True)

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Usuários</h4>
+
+<a href="{{ url_for('usuarios.novo') }}" class="btn btn-primary mb-3">
+    ➕ Novo Usuário
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Usuário</th>
+            <th>Cargo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for u in usuarios %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.cargo.nome }}</td>
+            <td>
+                {% if u.username != "admin" %}
+                <a href="{{ url_for('usuarios.excluir', id=u.id) }}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Excluir usuário?')">
+                    Excluir
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
