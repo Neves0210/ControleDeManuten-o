@@ -2,7 +2,7 @@
 {% block content %}
 <h4>Manutenções</h4>
 
-<a href="{{ url_for('manutencoes.nova') }}" class="btn btn-primary mb-2">
+<a href="{{url_for('manutencoes.nova_por_quarto', quarto_id=quarto.id) }}" class="btn btn-primary mb-2">
     Nova Manutenção
 </a>
 
